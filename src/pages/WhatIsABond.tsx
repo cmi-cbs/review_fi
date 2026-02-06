@@ -3,6 +3,12 @@ import PageLayout from '../components/PageLayout';
 
 type Feature = 'par' | 'coupon' | 'maturity' | null;
 
+const featureStyles = {
+  par: { bg: '#DBEAFE', border: '#3B82F6', text: '#1D4ED8' },
+  coupon: { bg: '#DCFCE7', border: '#22C55E', text: '#15803D' },
+  maturity: { bg: '#FEF3C7', border: '#F59E0B', text: '#B45309' },
+};
+
 export default function WhatIsABond() {
   const [highlighted, setHighlighted] = useState<Feature>(null);
 
@@ -11,24 +17,41 @@ export default function WhatIsABond() {
       id: 'par' as const,
       label: 'Par Value',
       description: 'The face value you receive at maturity. Usually $100 or $1,000.',
-      color: 'bg-blue-100 border-blue-300',
-      highlight: 'text-blue-600',
     },
     {
       id: 'coupon' as const,
       label: 'Coupon',
       description: 'Periodic interest payments, typically semi-annual in the U.S.',
-      color: 'bg-green-100 border-green-300',
-      highlight: 'text-green-600',
     },
     {
       id: 'maturity' as const,
       label: 'Maturity',
       description: 'The date when the bond expires and par value is repaid.',
-      color: 'bg-amber-100 border-amber-300',
-      highlight: 'text-amber-600',
     },
   ];
+
+  const getCardStyle = (id: Feature) => {
+    if (highlighted === id && id) {
+      const style = featureStyles[id];
+      return {
+        backgroundColor: style.bg,
+        borderColor: style.border,
+        borderWidth: '2px',
+      };
+    }
+    return {
+      backgroundColor: 'var(--color-warm-surface)',
+      borderColor: 'var(--color-border-subtle)',
+      borderWidth: '2px',
+    };
+  };
+
+  const getTextStyle = (id: Feature) => {
+    if (highlighted === id && id) {
+      return { color: featureStyles[id].text };
+    }
+    return {};
+  };
 
   return (
     <PageLayout
@@ -44,11 +67,10 @@ export default function WhatIsABond() {
               onMouseEnter={() => setHighlighted(feature.id)}
               onMouseLeave={() => setHighlighted(null)}
               onClick={() => setHighlighted(highlighted === feature.id ? null : feature.id)}
-              className={`p-4 rounded-xl border-2 transition-all text-left ${
-                highlighted === feature.id ? feature.color : 'bg-surface border-subtle'
-              }`}
+              className="p-4 rounded-xl transition-all text-left"
+              style={getCardStyle(feature.id)}
             >
-              <div className={`font-medium mb-1 ${highlighted === feature.id ? feature.highlight : ''}`}>
+              <div className="font-medium mb-1" style={getTextStyle(feature.id)}>
                 {feature.label}
               </div>
               <div className="text-xs text-muted">{feature.description}</div>
@@ -74,14 +96,20 @@ export default function WhatIsABond() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className={`absolute top-1/2 -translate-y-1/2 transition-all ${
-                  highlighted === 'coupon' ? 'scale-110' : ''
-                }`}
-                style={{ left: `${i * 20}%` }}
+                className="absolute top-1/2 -translate-y-1/2 transition-all"
+                style={{
+                  left: `${i * 20}%`,
+                  transform: `translateY(-50%) ${highlighted === 'coupon' ? 'scale(1.1)' : 'scale(1)'}`,
+                }}
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium ${
-                  highlighted === 'coupon' ? 'bg-green-100 text-green-700' : 'bg-surface border border-subtle'
-                }`}>
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-colors"
+                  style={
+                    highlighted === 'coupon'
+                      ? { backgroundColor: featureStyles.coupon.bg, color: featureStyles.coupon.text }
+                      : { backgroundColor: 'var(--color-warm-surface)', border: '1px solid var(--color-border-subtle)' }
+                  }
+                >
                   C
                 </div>
                 <div className="text-xs text-muted mt-2 text-center">{i * 0.5}y</div>
@@ -90,21 +118,33 @@ export default function WhatIsABond() {
 
             {/* Final payment (coupon + par) */}
             <div
-              className={`absolute top-1/2 -translate-y-1/2 right-0 transition-all ${
-                highlighted === 'maturity' || highlighted === 'par' ? 'scale-110' : ''
-              }`}
+              className="absolute top-1/2 right-0 transition-all"
+              style={{
+                transform: `translateY(-50%) ${highlighted === 'par' ? 'scale(1.1)' : 'scale(1)'}`,
+              }}
             >
-              <div className={`w-12 h-12 rounded-lg flex flex-col items-center justify-center text-xs font-medium ${
-                highlighted === 'maturity'
-                  ? 'bg-amber-100 text-amber-700'
-                  : highlighted === 'par'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-surface border border-subtle'
-              }`}>
+              <div
+                className="w-12 h-12 rounded-lg flex flex-col items-center justify-center text-xs font-medium transition-colors"
+                style={
+                  highlighted === 'par'
+                    ? { backgroundColor: featureStyles.par.bg, color: featureStyles.par.text }
+                    : { backgroundColor: 'var(--color-warm-surface)', border: '1px solid var(--color-border-subtle)' }
+                }
+              >
                 <span>C</span>
                 <span className={highlighted === 'par' ? 'font-bold' : ''}>+100</span>
               </div>
-              <div className="text-xs text-muted mt-2 text-center">2y</div>
+              {/* 2y label - highlights on maturity */}
+              <div
+                className="text-xs mt-2 text-center px-2 py-0.5 rounded transition-colors"
+                style={
+                  highlighted === 'maturity'
+                    ? { backgroundColor: featureStyles.maturity.bg, color: featureStyles.maturity.text, fontWeight: 600 }
+                    : { color: 'var(--color-text-muted)' }
+                }
+              >
+                2y
+              </div>
             </div>
           </div>
 
