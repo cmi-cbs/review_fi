@@ -1,18 +1,22 @@
 import { useState, useEffect, useCallback } from 'react';
-import BondBasics from './pages/BondBasics';
 import WhatIsABond from './pages/WhatIsABond';
 import SemiAnnualCompounding from './pages/SemiAnnualCompounding';
 import DiscountFactors from './pages/DiscountFactors';
-import SpotRatesAndYield from './pages/SpotRatesAndYield';
+import SpotRates from './pages/SpotRates';
 import PricingABond from './pages/PricingABond';
+import YieldToMaturity from './pages/YieldToMaturity';
+import SpotVsYield from './pages/SpotVsYield';
+import PremiumParDiscount from './pages/PremiumParDiscount';
 
 const pages = [
-  { id: 'basics', title: 'Bond Basics', component: BondBasics },
   { id: 'what-is-a-bond', title: 'What is a Bond?', component: WhatIsABond },
-  { id: 'compounding', title: 'Compounding', component: SemiAnnualCompounding },
+  { id: 'compounding', title: 'Semi-Annual Compounding', component: SemiAnnualCompounding },
   { id: 'discount-factors', title: 'Discount Factors', component: DiscountFactors },
-  { id: 'spot-yield', title: 'Spot Rates & Yield', component: SpotRatesAndYield },
+  { id: 'spot-rates', title: 'Spot Rates', component: SpotRates },
   { id: 'pricing', title: 'Pricing a Bond', component: PricingABond },
+  { id: 'ytm', title: 'Yield-to-Maturity', component: YieldToMaturity },
+  { id: 'spot-vs-yield', title: 'Spot vs. Yield', component: SpotVsYield },
+  { id: 'premium-par-discount', title: 'Premium, Par, Discount', component: PremiumParDiscount },
 ];
 
 function App() {
@@ -47,72 +51,73 @@ function App() {
 
   return (
     <div className="min-h-screen bg-paper flex flex-col">
-      {/* Header with Navigation */}
-      <header className="border-b border-subtle bg-surface sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-3">
-          {/* Title row */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-4">
-              <img src="/cgsm-logo.png" alt="CGSM" className="h-10" />
-              <div>
-                <h1 className="text-lg font-medium text-main">Bond Math Foundations</h1>
-                <p className="text-xs text-muted">Capital Markets & Investments</p>
-              </div>
-            </div>
-
-            {/* Arrows */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={goPrev}
-                disabled={currentPage === 0}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                  currentPage === 0
-                    ? 'text-muted cursor-not-allowed'
-                    : 'text-columbia hover:bg-columbia/10'
-                }`}
-              >
-                ←
-              </button>
-              <span className="text-sm text-muted w-12 text-center">
-                {currentPage + 1}/{pages.length}
-              </span>
-              <button
-                onClick={goNext}
-                disabled={currentPage === pages.length - 1}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                  currentPage === pages.length - 1
-                    ? 'text-muted cursor-not-allowed'
-                    : 'text-columbia hover:bg-columbia/10'
-                }`}
-              >
-                →
-              </button>
-            </div>
+      {/* Header */}
+      <header className="border-b border-subtle bg-surface">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-medium text-main">Bond Math Foundations</h1>
+            <p className="text-xs text-muted">Capital Markets & Investments</p>
           </div>
-
-          {/* Page tabs */}
-          <div className="flex gap-1 overflow-x-auto pb-1">
-            {pages.map((page, idx) => (
-              <button
-                key={page.id}
-                onClick={() => goToPage(idx)}
-                className={`px-3 py-1.5 rounded-lg text-sm whitespace-nowrap transition-colors ${
-                  idx === currentPage
-                    ? 'bg-columbia text-white font-medium'
-                    : 'text-muted hover:bg-columbia/10 hover:text-main'
-                }`}
-              >
-                {page.title}
-              </button>
-            ))}
+          <div className="text-sm text-muted">
+            {currentPage + 1} / {pages.length}
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-5xl mx-auto px-6 py-8 w-full">
+      <main className="flex-1 max-w-4xl mx-auto px-6 py-8 w-full">
         <CurrentPageComponent />
       </main>
+
+      {/* Navigation Footer */}
+      <footer className="border-t border-subtle bg-surface">
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          {/* Page dots */}
+          <div className="flex justify-center gap-2 mb-4">
+            {pages.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => goToPage(idx)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  idx === currentPage ? 'bg-columbia' : 'bg-subtle hover:bg-columbia/50'
+                }`}
+                aria-label={`Go to page ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Prev/Next buttons */}
+          <div className="flex justify-between items-center">
+            <button
+              onClick={goPrev}
+              disabled={currentPage === 0}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                currentPage === 0
+                  ? 'text-muted cursor-not-allowed'
+                  : 'text-columbia hover:bg-columbia/10'
+              }`}
+            >
+              ← Previous
+            </button>
+
+            <span className="text-sm text-muted">
+              {pages[currentPage].title}
+            </span>
+
+            <button
+              onClick={goNext}
+              disabled={currentPage === pages.length - 1}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                currentPage === pages.length - 1
+                  ? 'text-muted cursor-not-allowed'
+                  : 'text-columbia hover:bg-columbia/10'
+              }`}
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

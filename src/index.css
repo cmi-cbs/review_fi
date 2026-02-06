@@ -1,16 +1,14 @@
 @import "tailwindcss";
 
-/* CGSM Brand Colors */
+/* Digital Tactility Brand - Simon's Design System */
 @theme {
-  --color-cgsm-blue: #003366;
-  --color-cgsm-blue-dark: #002244;
-  --color-cgsm-gold: #AB9E51;
-  --color-cgsm-gold-light: #C4B86A;
-  --color-warm-paper: #FAFAFA;
-  --color-warm-surface: #F5F5F5;
-  --color-text-main: #1A1A1A;
-  --color-text-muted: #666666;
-  --color-border-subtle: #E5E5E5;
+  --color-columbia-500: #6F7F99;
+  --color-columbia-600: #5A6675;
+  --color-warm-paper: #F9F9F5;
+  --color-warm-surface: #F2F0E8;
+  --color-text-main: #2A2F36;
+  --color-text-muted: #666A70;
+  --color-border-subtle: #E0DFD5;
 
   --font-serif: 'Newsreader', serif;
   --font-sans: 'Inter', sans-serif;
@@ -33,14 +31,11 @@ h1, h2, h3, h4 {
 /* Utility classes for brand colors */
 .bg-paper { background-color: var(--color-warm-paper); }
 .bg-surface { background-color: var(--color-warm-surface); }
-.bg-columbia { background-color: var(--color-cgsm-blue); }
-.bg-columbia-hover:hover { background-color: var(--color-cgsm-blue-dark); }
-.bg-gold { background-color: var(--color-cgsm-gold); }
+.bg-columbia { background-color: var(--color-columbia-500); }
+.bg-columbia-hover:hover { background-color: var(--color-columbia-600); }
 
-.text-columbia { color: var(--color-cgsm-blue); }
-.text-gold { color: var(--color-cgsm-gold); }
+.text-columbia { color: var(--color-columbia-500); }
 .text-main { color: var(--color-text-main); }
 .text-muted { color: var(--color-text-muted); }
 
 .border-subtle { border-color: var(--color-border-subtle); }
-.border-gold { border-color: var(--color-cgsm-gold); }
