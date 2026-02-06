@@ -22,7 +22,7 @@ export default function PageLayout({ title, subtitle, concept, children }: PageL
 
       {/* Concept */}
       <div className="mb-8">
-        <p className="text-lg leading-relaxed text-main max-w-2xl">
+        <p className="text-lg leading-relaxed text-main">
           {concept}
         </p>
       </div>
