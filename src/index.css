@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Digital Tactility Brand - Simon's Design System */
+@theme {
+  --color-columbia-500: #6F7F99;
+  --color-columbia-600: #5A6675;
+  --color-warm-paper: #F9F9F5;
+  --color-warm-surface: #F2F0E8;
+  --color-text-main: #2A2F36;
+  --color-text-muted: #666A70;
+  --color-border-subtle: #E0DFD5;
+
+  --font-serif: 'Newsreader', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+/* Base styles */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-warm-paper);
+  color: var(--color-text-main);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--color-text-main);
+}
+
+/* Utility classes for brand colors */
+.bg-paper { background-color: var(--color-warm-paper); }
+.bg-surface { background-color: var(--color-warm-surface); }
+.bg-columbia { background-color: var(--color-columbia-500); }
+.bg-columbia-hover:hover { background-color: var(--color-columbia-600); }
+
+.text-columbia { color: var(--color-columbia-500); }
+.text-main { color: var(--color-text-main); }
+.text-muted { color: var(--color-text-muted); }
+
+.border-subtle { border-color: var(--color-border-subtle); }
